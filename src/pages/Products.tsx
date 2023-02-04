@@ -105,6 +105,16 @@ function Products() {
             ))}
           </div>
           <div className="flex items-center justify-center gap-2">
+            <button onClick={() => setPage(1)} className="rounded-md bg-gray-100 p-2">
+              <div className="flex">
+                <span className="mr-[-10px]">
+                  <AiOutlineLeft />
+                </span>
+                <span>
+                  <AiOutlineLeft />
+                </span>
+              </div>
+            </button>
             <button onClick={handlePreviousPage} className="rounded-md bg-gray-100 p-2">
               <AiOutlineLeft />
             </button>
@@ -113,6 +123,16 @@ function Products() {
             </span>
             <button onClick={handleNextPage} className="rounded-md bg-gray-100 p-2">
               <AiOutlineRight />
+            </button>
+            <button onClick={() => setPage(maxPage)} className="rounded-md bg-gray-100 p-2">
+              <div className="flex">
+                <span className="mr-[-10px]">
+                  <AiOutlineRight />
+                </span>
+                <span>
+                  <AiOutlineRight />
+                </span>
+              </div>
             </button>
           </div>
         </div>
