@@ -83,11 +83,15 @@ function Products() {
                 </div>
                 <div className="flex items-center border-b border-b-gray-300">
                   <span className="text-md grow font-bold uppercase">Stock</span>
-                  <span className="ml-2 text-sm">{product.stock}</span>
+                  <span className="ml-2 text-sm"> {new Intl.NumberFormat("fr-FR").format(product.stock)}</span>
                 </div>
                 <div className="flex items-center border-b border-b-gray-300">
                   <span className="grow text-sm font-bold uppercase">Price</span>
-                  <span className="ml-2 text-sm">{product.details.price}</span>
+                  <span className="ml-2 text-sm">
+                    {new Intl.NumberFormat("fr-FR", { style: "currency", currency: "EUR" }).format(
+                      parseInt(product.details.price),
+                    )}
+                  </span>
                 </div>
                 <div className="flex items-center">
                   <span className="grow text-sm font-bold uppercase">Color</span>
