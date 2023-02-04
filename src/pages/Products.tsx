@@ -82,7 +82,7 @@ function Products() {
                   <span className="ml-2 truncate text-sm">{product.name}</span>
                 </div>
                 <div className="flex items-center border-b border-b-gray-300">
-                  <span className="text-md grow font-bold uppercase">Stock</span>
+                  <span className="grow text-sm font-bold uppercase">Stock</span>
                   <span className="ml-2 text-sm"> {new Intl.NumberFormat("fr-FR").format(product.stock)}</span>
                 </div>
                 <div className="flex items-center border-b border-b-gray-300">
@@ -93,7 +93,7 @@ function Products() {
                     )}
                   </span>
                 </div>
-                <div className="flex items-center">
+                <div className="flex items-center border-b border-b-gray-300">
                   <span className="grow text-sm font-bold uppercase">Color</span>
                   <span className="ml-2 text-sm">{product.details.color}</span>
                 </div>
