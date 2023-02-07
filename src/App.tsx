@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from "react-query"
 import { Route, Routes } from "react-router-dom"
 import Login from "./pages/Login"
+import ProductDetails from "./pages/ProductDetails"
 import Products from "./pages/Products"
 
 function App() {
@@ -11,6 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/products" element={<Products />} />
+        <Route path="/product/:id" element={<ProductDetails />} />
       </Routes>
     </QueryClientProvider>
   )
