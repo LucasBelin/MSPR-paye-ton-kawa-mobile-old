@@ -1,7 +1,7 @@
+import { useQuery } from "@tanstack/react-query"
 import axios from "axios"
 import { useState } from "react"
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai"
-import { useQuery } from "react-query"
 import { Link } from "react-router-dom"
 import { Product, ProductsResponseSchema } from "../schemas/ProductSchemas"
 
@@ -15,7 +15,7 @@ function Products() {
   const currentProducts = products?.slice(indexOfFirstProduct, indexOfLastProduct)
   const maxPage = Math.ceil(products.length / productsPerPage)
 
-  const { isLoading, isError, data, error } = useQuery("products", async () => {
+  const { isLoading, isError, data, error } = useQuery(["products"], async () => {
     const res = await axios.get("https://615f5fb4f7254d0017068109.mockapi.io/api/v1/products")
     ProductsResponseSchema.safeParse(res.data)
     setProducts(res.data)
