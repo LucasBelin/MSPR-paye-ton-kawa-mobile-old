@@ -2,21 +2,8 @@ import axios from "axios"
 import { useState } from "react"
 import { AiOutlineLeft, AiOutlineRight } from "react-icons/ai"
 import { useQuery } from "react-query"
-import { z } from "zod"
-
-const ProductSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  stock: z.number(),
-  details: z.object({
-    description: z.string(),
-    color: z.string(),
-    price: z.string(),
-  }),
-})
-type Product = z.infer<typeof ProductSchema>
-
-const ProductsResponseSchema = z.array(ProductSchema)
+import { Link } from "react-router-dom"
+import { Product, ProductsResponseSchema } from "../schemas/ProductSchemas"
 
 function Products() {
   const [products, setProducts] = useState<Product[]>([])
@@ -46,8 +33,12 @@ function Products() {
   }
 
   function handleProductsPerPageChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setProductsPerPage(parseInt(e.target.value))
     setPage(1)
+    if (isNaN(parseInt(e.target.value))) {
+      setProductsPerPage(1)
+      return
+    }
+    setProductsPerPage(parseInt(e.target.value))
   }
 
   return (
@@ -62,7 +53,6 @@ function Products() {
             id="nb-products"
             type="number"
             placeholder={productsPerPage.toString()}
-            value={productsPerPage}
             max={products.length}
             min={1}
             onChange={handleProductsPerPageChange}
@@ -98,13 +88,13 @@ function Products() {
                   <span className="ml-2 text-sm">{product.details.color}</span>
                 </div>
                 <button className="mt-2 flex appearance-none items-center justify-center gap-1 self-start rounded-sm bg-blue-500 p-2 text-xs text-white">
-                  View this product
+                  <Link to={`/product/${product.id}`}>View this product</Link>
                   <AiOutlineRight size={15} />
                 </button>
               </div>
             ))}
           </div>
-          <div className="flex items-center justify-center gap-2">
+          <div className="mb-2 flex items-center justify-center gap-2">
             <button onClick={() => setPage(1)} className="rounded-md bg-gray-100 p-2">
               <div className="flex">
                 <span className="mr-[-10px]">
