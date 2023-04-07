@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_practice/products_page.dart';
+import 'package:paye_ton_kawa/products_page.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
