@@ -55,105 +55,139 @@ class _ProductsPageState extends State<ProductsPage> {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
           child: isLoading
-              ? const Center(
-                  child: CircularProgressIndicator(
-                  color: Colors.white,
-                ))
+              ? const ProgressIndicator()
               : isError
-                  ? Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(Icons.sentiment_dissatisfied_outlined,
-                            color: Colors.red[700], size: 50),
-                        const Text(
-                          "Failed to retrieve products.\n Please check your internet connection and try again later.",
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white70,
-                          ),
-                        ),
-                      ],
-                    )
-                  : ListView.builder(
-                      itemCount: products.length,
-                      itemBuilder: (context, index) {
-                        return Card(
-                          elevation: 4,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Stack(
-                            children: [
-                              ListTile(
-                                contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 16, vertical: 10),
-                                title: Text(
-                                  products[index].name,
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
-                                ),
-                                subtitle: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      products[index].details.description,
-                                      style: const TextStyle(fontSize: 16),
-                                    ),
-                                    const SizedBox(height: 8),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        Text(
-                                          "${products[index].details.price}€",
-                                          style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Positioned(
-                                bottom: 0,
-                                right: -15,
-                                child: ElevatedButton.icon(
-                                  onPressed: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              ProductDetailsPage(
-                                                  product: products[index])),
-                                    );
-                                  },
-                                  icon: const Icon(
-                                    Icons.chevron_right_outlined,
-                                    color: Colors.blue,
-                                    size: 30,
-                                  ),
-                                  label: const Text(""),
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(
-                                        Colors.transparent),
-                                    elevation: MaterialStateProperty.all(0),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        );
-                      },
-                    ),
+                  ? const RequestErrorMessage()
+                  : Products(products: products),
         ),
       ),
     );
+  }
+}
+
+class Products extends StatelessWidget {
+  const Products({
+    super.key,
+    required this.products,
+  });
+
+  final List<Product> products;
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      itemCount: products.length,
+      itemBuilder: (context, index) {
+        return Card(
+          elevation: 4,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Stack(
+            children: [
+              ListTile(
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                title: Text(
+                  products[index].name,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      products[index].details.description,
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          "${products[index].details.price}€",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              Positioned(
+                bottom: 0,
+                right: -15,
+                child: ElevatedButton.icon(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              ProductDetailsPage(product: products[index])),
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.chevron_right_outlined,
+                    color: Colors.blue,
+                    size: 30,
+                  ),
+                  label: const Text(""),
+                  style: ButtonStyle(
+                    backgroundColor:
+                        MaterialStateProperty.all(Colors.transparent),
+                    elevation: MaterialStateProperty.all(0),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class RequestErrorMessage extends StatelessWidget {
+  const RequestErrorMessage({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Icon(Icons.sentiment_dissatisfied_outlined,
+            color: Colors.red[700], size: 50),
+        const Text(
+          "Failed to retrieve products.\n Please check your internet connection and try again later.",
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white70,
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class ProgressIndicator extends StatelessWidget {
+  const ProgressIndicator({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+        child: CircularProgressIndicator(
+      color: Colors.white,
+    ));
   }
 }
 
