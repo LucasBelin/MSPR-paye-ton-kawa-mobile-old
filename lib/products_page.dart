@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:paye_ton_kawa/product_details_page.dart';
 
+import 'boxes.dart';
+import 'confirmation_dialog.dart';
 import 'login_page.dart';
 
 class ProductsPage extends StatefulWidget {
@@ -58,12 +60,43 @@ class _ProductsPageState extends State<ProductsPage> {
     }
   }
 
+  void logout() {
+    box.delete("jwt_token");
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginPage()),
+    );
+  }
+
+  void _showConfirmationDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return ConfirmationDialog(
+          onConfirm: (bool confirmed) {
+            logout();
+          },
+          onCancel: (bool confirmed) {
+            // Handle cancellation
+            debugPrint('Cancelled: $confirmed');
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue[700],
       appBar: AppBar(
         title: const Text("Products"),
+        actions: [
+          IconButton(
+            onPressed: () => _showConfirmationDialog(context),
+            icon: const Icon(Icons.logout),
+          ),
+        ],
       ),
       body: Center(
         child: Padding(
