@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:paye_ton_kawa/products_page.dart';
+import 'package:paye_ton_kawa/models/product.dart';
 
 class ProductDetailsPage extends StatelessWidget {
   final Product product;

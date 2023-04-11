@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:paye_ton_kawa/models/boxes.dart';
 import 'package:paye_ton_kawa/products_page.dart';
 
-import 'boxes.dart';
 import 'login_page.dart';
 
 void main() async {

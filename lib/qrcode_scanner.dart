@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:paye_ton_kawa/models/boxes.dart';
 import 'package:paye_ton_kawa/products_page.dart';
-
-import 'boxes.dart';
 
 class QRCodeScanner extends StatefulWidget {
   const QRCodeScanner({super.key});
