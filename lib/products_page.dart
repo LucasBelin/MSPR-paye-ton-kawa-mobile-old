@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:paye_ton_kawa/product_details_page.dart';
 
+import 'login_page.dart';
+
 class ProductsPage extends StatefulWidget {
   const ProductsPage({Key? key}) : super(key: key);
 
@@ -35,6 +37,18 @@ class _ProductsPageState extends State<ProductsPage> {
             .toList()
             .cast<Product>();
       });
+    } else if (response.statusCode == 401) {
+      setState(() {
+        isLoading = false;
+        isError = true;
+      });
+      debugPrint('Error: ${response.statusCode}');
+      if (context.mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const LoginPage()),
+        );
+      }
     } else {
       setState(() {
         isLoading = false;

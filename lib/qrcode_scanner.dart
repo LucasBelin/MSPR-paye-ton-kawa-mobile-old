@@ -1,8 +1,8 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:paye_ton_kawa/products_page.dart';
+
+import 'boxes.dart';
 
 class QRCodeScanner extends StatefulWidget {
   const QRCodeScanner({super.key});
@@ -13,6 +13,18 @@ class QRCodeScanner extends StatefulWidget {
 
 class _QRCodeScannerState extends State<QRCodeScanner> {
   MobileScannerController cameraController = MobileScannerController();
+
+  void _onQRCodeScanned(String? code) {
+    if (code == null || code.isEmpty) return;
+    //TODO: backend request to check if code is valid
+    if (code == "a") {
+      box.put("jwt_token", code);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const ProductsPage()),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,18 +69,7 @@ class _QRCodeScannerState extends State<QRCodeScanner> {
       body: MobileScanner(
         controller: cameraController,
         onDetect: (capture) {
-          final List<Barcode> barcodes = capture.barcodes;
-          final Uint8List? image = capture.image;
-          for (final barcode in barcodes) {
-            debugPrint('Barcode found! ${barcode.rawValue}');
-            if (barcode.rawValue == "a") {
-              Navigator.pop(context);
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ProductsPage()),
-              );
-            }
-          }
+          _onQRCodeScanned(capture.barcodes[0].rawValue);
         },
       ),
     );
