@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "flutter_practice" "\0"
+            VALUE "FileDescription", "paye_ton_kawa" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "flutter_practice" "\0"
+            VALUE "InternalName", "paye_ton_kawa" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2023 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "flutter_practice.exe" "\0"
-            VALUE "ProductName", "flutter_practice" "\0"
+            VALUE "OriginalFilename", "paye_ton_kawa.exe" "\0"
+            VALUE "ProductName", "paye_ton_kawa" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END
