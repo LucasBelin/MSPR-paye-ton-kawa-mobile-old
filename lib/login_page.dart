@@ -1,8 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:paye_ton_kawa/products_page.dart';
 import 'package:paye_ton_kawa/qrcode_scanner.dart';
 
-class LoginPage extends StatelessWidget {
+import 'models/boxes.dart';
+
+class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  @override
+  void initState() {
+    super.initState();
+
+    final token = box.get("jwt_token");
+    if (token != null) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const ProductsPage()),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {

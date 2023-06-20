@@ -1,7 +1,7 @@
 class Product {
   String id;
   String name;
-  int stock;
+  String stock;
   ProductDetails details;
 
   Product(
@@ -14,7 +14,7 @@ class Product {
     return Product(
       id: json['id'],
       name: json['name'],
-      stock: json['stock'],
+      stock: json['stock'].toString(),
       details: ProductDetails.fromJson(json['details']),
     );
   }

@@ -21,6 +21,11 @@ class _ProductsPageState extends State<ProductsPage> {
   bool isLoading = false;
   bool isError = false;
 
+  final int itemsPerPage = 4;
+  final PageController pageController = PageController(initialPage: 0);
+
+  int currentPage = 0;
+
   @override
   void initState() {
     super.initState();
@@ -86,12 +91,67 @@ class _ProductsPageState extends State<ProductsPage> {
     );
   }
 
+  List<Product> getDisplayedProducts() {
+    final startIndex = currentPage * itemsPerPage;
+    final endIndex = (startIndex + itemsPerPage).clamp(0, products.length);
+    return products.sublist(startIndex, endIndex);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blue[700],
+      bottomNavigationBar: BottomAppBar(
+        elevation: 0,
+        color: Colors.blue[700],
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            IconButton(
+              onPressed: () {
+                setState(() {
+                  currentPage = 0;
+                });
+              },
+              icon: const Icon(Icons.first_page, color: Colors.white),
+            ),
+            IconButton(
+              onPressed: () {
+                if (currentPage > 0) {
+                  setState(() {
+                    currentPage--;
+                  });
+                }
+              },
+              icon: const Icon(Icons.navigate_before, color: Colors.white),
+            ),
+            Text('Page ${currentPage + 1}',
+                style: const TextStyle(color: Colors.white)),
+            IconButton(
+              onPressed: () {
+                if (currentPage < (products.length / itemsPerPage).ceil() - 1) {
+                  setState(() {
+                    currentPage++;
+                  });
+                }
+              },
+              icon: const Icon(Icons.navigate_next, color: Colors.white),
+            ),
+            IconButton(
+              onPressed: () {
+                final lastPage = (products.length / itemsPerPage).ceil() - 1;
+                setState(() {
+                  currentPage = lastPage;
+                });
+              },
+              icon: const Icon(Icons.last_page, color: Colors.white),
+            ),
+          ],
+        ),
+      ),
       appBar: AppBar(
-        title: const Text("Products"),
+        title: const Text("Produits"),
+        automaticallyImplyLeading: false,
         actions: [
           IconButton(
             onPressed: () => _showConfirmationDialog(context),
@@ -106,7 +166,85 @@ class _ProductsPageState extends State<ProductsPage> {
               ? const ProgressIndicator()
               : isError
                   ? const RequestErrorMessage()
-                  : Products(products: products),
+                  : ListView.builder(
+                      itemCount: itemsPerPage,
+                      itemBuilder: (context, index) {
+                        final displayedProducts = getDisplayedProducts();
+                        return Card(
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Stack(
+                            children: [
+                              ListTile(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 10),
+                                title: Text(
+                                  displayedProducts[index].name,
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                                subtitle: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      displayedProducts[index]
+                                          .details
+                                          .description,
+                                      style: const TextStyle(fontSize: 16),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "${displayedProducts[index].details.price}€",
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Positioned(
+                                bottom: 0,
+                                right: -15,
+                                child: ElevatedButton.icon(
+                                  onPressed: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              ProductDetailsPage(
+                                                  product: displayedProducts[
+                                                      index])),
+                                    );
+                                  },
+                                  icon: const Icon(
+                                    Icons.chevron_right_outlined,
+                                    color: Colors.blue,
+                                    size: 30,
+                                  ),
+                                  label: const Text(""),
+                                  style: ButtonStyle(
+                                    backgroundColor: MaterialStateProperty.all(
+                                        Colors.transparent),
+                                    elevation: MaterialStateProperty.all(0),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      controller: pageController),
         ),
       ),
     );
